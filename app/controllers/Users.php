@@ -4,6 +4,8 @@ class Users extends Controller{
         $this->userModel = $this->model('User');
     }
 
+
+    //***************** REGISTER *******************//
     public function register(){
         // check for post
         if($_SERVER['REQUEST_METHOD']=='POST'){
@@ -89,6 +91,7 @@ class Users extends Controller{
         }
     }
 
+/**************************************************************************/
 
 
 
@@ -109,8 +112,7 @@ class Users extends Controller{
 
 
 
-
-
+//***************************** LOGIN ************************************//
     public function login(){
         // Check for POST
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -179,9 +181,24 @@ class Users extends Controller{
             $this->view('users/login', $data);
         }
     }
+/************************************************************************************/
 
 
-//********************* THE AJAX PART ***********************//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//********************* THE AJAX PART FOR THE REGISTRATION ***********************//
 
     public function createAccountAjax(){
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'){
@@ -195,9 +212,12 @@ class Users extends Controller{
                 $name = $_POST["name"];
                 $email = $_POST["email"];
                 $password = $_POST["password"];
+                $data=[
+
+                ];
 
                 //how do we reference the model
-                $model=$this->model("AccountModel");
+                $model=$this->model("User");
                 $success=$model->createAccount($name,$email,$password);
                 if($success){
                     echo "successfully inserted";
@@ -207,7 +227,7 @@ class Users extends Controller{
                 }
             }
         } else {
-            return $this->view("Users/createAccountAjax");
+            return $this->view("Users/createAccountAjax",$data);
         }
     }
 

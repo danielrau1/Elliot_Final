@@ -1,9 +1,10 @@
 <?php require APPROOT.'\views\inc\navbar.php'; ?>
 
 <form method="post" action="createAccountAjax" id="ajaxAccount">
-    <input type="text" name="name" id="user" placeholder="username">
-    <input type="text" name="email" id="em" placeholder="email">
-    <input type="password" name="password" id="pass" placeholder="password">
+    <input type="text" name="name" id="user" placeholder="username"><br>
+    <span style="color: red"><?php echo $data['name_err']; ?></span><br>
+    <input type="text" name="email" id="em" placeholder="email"><br>
+    <input type="password" name="password" id="pass" placeholder="password"><br>
     <input type="submit" name="submit">
 </form>
 <script>

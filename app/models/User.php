@@ -74,7 +74,7 @@ class User{
         }
         $query = "insert into users(name,email, password) values(:name,:email,:password)";
         $this->db->query($query);
-        $this->db->bind(":username", $name);
+        $this->db->bind(":name", $name);
         $this->db->bind(":email", $email);
         $this->db->bind(":password", $password);
 
