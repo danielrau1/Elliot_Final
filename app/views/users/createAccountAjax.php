@@ -18,7 +18,7 @@
         var params = "name="+name+"&email="+email +"&password="+password+"&submit=submit";
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost/shareposts/Users/createAccountAjax', true);
+        xhr.open('POST', 'http://localhost/shareposts2/Users/createAccountAjax', true);
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
         xhr.onload = function(){
