@@ -6,7 +6,7 @@
 define('APPROOT',dirname(dirname(__FILE__))); // define constant up to the app root, and can access from any file
 
 // (B4.1) url root
-define('URLROOT','http://localhost/shareposts');
+define('URLROOT','http://localhost/shareposts2');
 
 //(B4.2) site name
 define('SITENAME','SharePosts');

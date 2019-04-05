@@ -12,7 +12,7 @@ class Pages extends Controller{ // (B1)
     public function index(){ //(B2) can use the methods of the Controller
 
         $data = [
-            'title'=>'SharePosts'
+            'title'=>'SharePosts2'
 
         ];
 

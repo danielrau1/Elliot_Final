@@ -1,3 +1,4 @@
+<?php require APPROOT.'\views\inc\navbar.php'; ?>
 
 <form method="post" action="createAccountAjax" id="ajaxAccount">
     <input type="text" name="name" id="user" placeholder="username">
