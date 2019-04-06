@@ -202,32 +202,60 @@ class Users extends Controller{
 
     public function createAccountAjax(){
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest'){
-            echo "in ajax call";
+
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            echo "post request ajax";
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST=filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
             if (isset($_POST["submit"])) {
                 //check they are set later
-                $name = $_POST["name"];
-                $email = $_POST["email"];
-                $password = $_POST["password"];
                 $data=[
-
+                    'name'=>trim($_POST['name']),
+                    'email'=>trim($_POST['email']),
+                    'password'=>trim($_POST['password']),
+                    'name_err'=>'',
+                    'email_err'=>'',
+                    'password_err'=>''
                 ];
 
-                //how do we reference the model
-                $model=$this->model("User");
-                $success=$model->createAccount($name,$email,$password);
-                if($success){
-                    echo "successfully inserted";
+                if(empty($data['name'])){
+                    $data['name_err']='Please enter name';
+
+                     $this->view('users/createAccountAjax',$data);
                 }
-                else{
-                    echo "insert failed";
+
+                else {
+                    //how do we reference the model
+                    $model = $this->model("User");
+                    $success = $model->createAccount($data['name'], $data['email'], $data['password']);
+                    if ($success) {
+                        echo "successfully inserted";
+                    } else {
+                        echo "insert failed";
+                    }
+                    $data=[
+                        'name'=>'',
+                        'email'=>'',
+                        'password'=>'',
+                        'name_err'=>'',
+                        'email_err'=>'',
+                        'password_err'=>''
+                    ];
+                    $this->view('users/createAccountAjax',$data);
+
                 }
             }
         } else {
-            return $this->view("Users/createAccountAjax",$data);
+            $data=[
+                'name'=>'',
+                'email'=>'',
+                'password'=>'',
+                'name_err'=>'',
+                'email_err'=>'',
+                'password_err'=>''
+            ];
+             $this->view('users/createAccountAjax',$data);
         }
     }
 
