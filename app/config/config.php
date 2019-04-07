@@ -6,10 +6,10 @@
 define('APPROOT',dirname(dirname(__FILE__))); // define constant up to the app root, and can access from any file
 
 // (B4.1) url root
-define('URLROOT','http://localhost/shareposts2');
+define('URLROOT','http://localhost/Final');
 
 //(B4.2) site name
-define('SITENAME','SharePosts');
+define('SITENAME','Final');
 
 //(B6) DB Params
 define('DB_HOST','localhost:3306'); // Make sure you type the right local host !!!

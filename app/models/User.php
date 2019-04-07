@@ -8,9 +8,11 @@ class User{
 
     // Register user
     public function register($data){
-        $this->db->query( 'INSERT INTO users (name, email, password) VALUES (:name, :email, :password)');
+        $this->db->query( 'INSERT INTO final (name, email, age, username, password) VALUES (:name, :email, :age, :username, :password)');
         $this->db->bind(':name',$data['name']);
         $this->db->bind(':email',$data['email']);
+        $this->db->bind(':age',$data['age']);
+        $this->db->bind(':username',$data['username']);
         $this->db->bind(':password',$data['password']);
 
         //Execute
@@ -22,22 +24,22 @@ class User{
     }
 
     //Login user
-    public function login($email, $password){
-        $this->db->query('SELECT * FROM users WHERE email= :email');
-        $this->db->bind(':email', $email);
+    public function login($name, $username){
+        $this->db->query('SELECT * FROM final WHERE username= :username');
+        $this->db->bind(':username', $username);
         $row =$this->db->single();
-        $hashed_password = $row->password;
-        if($password== $hashed_password){
+        $hashed_username = $row->username;
+        if($username== $hashed_username){
             return $row;
         }else{
             return false;
         }
     }
 
-    // Find user by email
-    public function findUserByEmail($email){
-        $this->db->query('SELECT * FROM users WHERE email = :email');
-        $this->db->bind(':email',$email);
+    // Find user by username
+    public function findUserByUsername($username){
+        $this->db->query('SELECT * FROM final WHERE username = :username');
+        $this->db->bind(':username',$username);
         $row = $this->db->single();
         //check row
         if($this->db->rowCount()>0){
@@ -50,11 +52,11 @@ class User{
 
     // *********** THE AJAX PART ********************//
 
-    public function checkUserExists($name)
+    public function checkUserExists($username)
     {
-        $query = "select count(*) from users where name=:name";
+        $query = "select count(*) from final where username=:username";
         $this->db->query($query);
-        $this->db->bind(":name", $name, PDO::PARAM_STR);
+        $this->db->bind(":username", $username, PDO::PARAM_STR);
         $this->db->execute();
         $rowCount = $this->db->fetchColumn();
 
@@ -66,16 +68,18 @@ class User{
         }
     }
 
-    public function createAccount($name,$email, $password)
+    public function createAccount($name,$email,$age,$username, $password)
     {
-        $alreadyExists = $this->checkUserExists($name);
+        $alreadyExists = $this->checkUserExists($username);
         if ($alreadyExists) {
             return false;
         }
-        $query = "insert into users(name,email, password) values(:name,:email,:password)";
+        $query = "insert into final(name,email,age,username, password) values(:name,:email,:age,:username,:password)";
         $this->db->query($query);
         $this->db->bind(":name", $name);
         $this->db->bind(":email", $email);
+        $this->db->bind(":age", $age);
+        $this->db->bind(":username", $username);
         $this->db->bind(":password", $password);
 
         $success = $this->db->execute();

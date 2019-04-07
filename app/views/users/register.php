@@ -11,6 +11,12 @@
     Email <input type="text" name="email" value="<?php echo $data['email']; ?>"><br>
     <span style="color: red"><?php echo $data['email_err']; ?></span><br>
 
+    Age <input type="text" name="age" value="<?php echo $data['age']; ?>"><br>
+    <span style="color: red"><?php echo $data['age_err']; ?></span><br>
+
+    Username <input type="text" name="username" value="<?php echo $data['username']; ?>"><br>
+    <span style="color: red"><?php echo $data['username_err']; ?></span><br>
+
     Password <input type="text" name="password" value="<?php echo $data['password']; ?>"><br>
     <span style="color: red"><?php echo $data['password_err']; ?></span><br>
 

@@ -2,6 +2,6 @@
 <!--(B4)-->
 <?php echo APPROOT; ?>
 
-<h1>Hi</h1>
+<h1>This is pages/index.php - goes here if wrong url</h1>
 
 <?php require APPROOT.'\views\inc\navbar.php'; ?>

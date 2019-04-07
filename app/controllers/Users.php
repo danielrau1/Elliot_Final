@@ -1,4 +1,5 @@
 <?php
+session_start();
 class Users extends Controller{
     public function __construct(){
         $this->userModel = $this->model('User');
@@ -18,25 +19,52 @@ class Users extends Controller{
             $data=[
                 'name'=>trim($_POST['name']),
                 'email'=>trim($_POST['email']),
+                'age'=>trim($_POST['age']),
+                'username'=>trim($_POST['username']),
                 'password'=>trim($_POST['password']),
                 'confirm_password'=>trim($_POST['confirm_password']),
                 'name_err'=>'',
                 'email_err'=>'',
+                'age_err'=>'',
+                'username_err'=>'',
                 'password_err'=>'',
                 'confirm_password_err'=>''
             ];
             // validate email
             if(empty($data['email'])){
                 $data['email_err']='Please enter emil';
-            }else{
+            }
+            /*
+            else{
                 //check email
                 if($this->userModel->findUserByEmail($data['email'])){
                     $data['email_err']='email exists';
                 }
             }
+            */
+
             // validate name
             if(empty($data['name'])){
                 $data['name_err']='Please enter name';
+            }
+
+            // validate age
+            if(empty($data['age'])){
+                $data['age_err']='Please enter age';
+            }
+            elseif(($data['age'])*1 <=0){
+                $data['age_err']='Age must be > 0';
+            }
+
+            // validate username
+            if(empty($data['username'])){
+                $data['username_err']='Please enter username';
+            }
+            else{
+                //check username
+                if($this->userModel->findUserByUsername($data['username'])){
+                    $data['username_err']='username exists';
+                }
             }
 
             // validate password
@@ -44,8 +72,8 @@ class Users extends Controller{
                 $data['password_err']='Please enter password';
             }
             // validate password
-            if(empty($data['password'])){
-                $data['password_err']='Please enter password';
+            elseif(strlen($data['password'])!=8){
+                $data['password_err']='Password must be exactly 8 chars';
             }
             // validate confirm password
             if(empty($data['confirm_password'])){
@@ -58,7 +86,7 @@ class Users extends Controller{
             }
 
             // make sure errors are empty
-            if(empty($data['email_err']) && empty($data['name_err']) && empty($data['password_err']) && empty($data['confirm_password_err'])){
+            if(empty($data['email_err']) && empty($data['name_err']) && empty($data['password_err']) && empty($data['confirm_password_err']) && empty($data['age_err']) && empty($data['username_err']) ){
                 // validate
 
                 //Register User
@@ -78,10 +106,14 @@ class Users extends Controller{
             $data=[
                 'name'=>'',
                 'email'=>'',
+                'age'=>'',
+                'username'=>'',
                 'password'=>'',
                 'confirm_password'=>'',
                 'name_err'=>'',
                 'email_err'=>'',
+                'age_err'=>'',
+                'username_err'=>'',
                 'password_err'=>'',
                 'confirm_password_err'=>''
             ];
@@ -122,41 +154,45 @@ class Users extends Controller{
 
             // Init data
             $data =[
-                'email' => trim($_POST['email']),
-                'password' => trim($_POST['password']),
-                'email_err' => '',
-                'password_err' => '',
+                'name' => trim($_POST['name']),
+                'username' => trim($_POST['username']),
+                'name_err' => '',
+                'username_err' => '',
             ];
 
             // Validate Email
-            if(empty($data['email'])){
-                $data['email_err'] = 'Pleae enter email';
+            if(empty($data['name'])){
+                $data['name_err'] = 'Pleae enter name';
             }
 
             // Validate Password
-            if(empty($data['password'])){
-                $data['password_err'] = 'Please enter password';
+            if(empty($data['username'])){
+                $data['username_err'] = 'Please enter username';
             }
 
 
             // Check for user /email
-            if($this->userModel->findUserByEmail($data['email'])){
+            if($this->userModel->findUserByUsername($data['username'])){
                 //user found
             }else{
-                $data['email_err'] = "no user found";
+                $data['username_err'] = "no user found";
             }
 
 
             // Make sure errors are empty
-            if(empty($data['email_err']) && empty($data['password_err'])) {
+            if(empty($data['name_err']) && empty($data['username_err'])) {
                 // Validated
                //check and set logged in user
-                $loggedInUser = $this->userModel->login($data['email'],$data['password']);
+                $loggedInUser = $this->userModel->login($data['name'],$data['username']);
             if($loggedInUser){
                 // create sessions
-                die('success');
+                //die('you are logged');
+                //$this->view('pages/about', $data);
+                $_SESSION['in'] = $data['username'];
+                header('Location: http://localhost/Final/views/about');
+
             }else{
-                $data['password_err']='password incorrect';
+                $data['username_err']='username incorrect';
                 $this->view('users/login', $data);
             }
 
@@ -171,10 +207,10 @@ class Users extends Controller{
         else {
             // Init data
             $data =[
-                'email' => '',
-                'password' => '',
-                'email_err' => '',
-                'password_err' => '',
+                'name' => '',
+                'username' => '',
+                'name_err' => '',
+                'username_err' => '',
             ];
 
             // Load view
@@ -213,9 +249,13 @@ class Users extends Controller{
                 $data=[
                     'name'=>trim($_POST['name']),
                     'email'=>trim($_POST['email']),
+                    'age'=>trim($_POST['age']),
+                    'username'=>trim($_POST['username']),
                     'password'=>trim($_POST['password']),
                     'name_err'=>'',
                     'email_err'=>'',
+                    'age_err'=>'',
+                    'username_err'=>'',
                     'password_err'=>''
                 ];
 
@@ -228,7 +268,7 @@ class Users extends Controller{
                 else {
                     //how do we reference the model
                     $model = $this->model("User");
-                    $success = $model->createAccount($data['name'], $data['email'], $data['password']);
+                    $success = $model->createAccount($data['name'], $data['email'], $data['age'], $data['username'],$data['password']);
                     if ($success) {
                         echo "successfully inserted";
                     } else {
@@ -237,9 +277,13 @@ class Users extends Controller{
                     $data=[
                         'name'=>'',
                         'email'=>'',
+                        'age'=>'',
+                        'username'=>'',
                         'password'=>'',
                         'name_err'=>'',
                         'email_err'=>'',
+                        'age_err'=>'',
+                        'username_err'=>'',
                         'password_err'=>''
                     ];
                     $this->view('users/createAccountAjax',$data);
@@ -250,9 +294,13 @@ class Users extends Controller{
             $data=[
                 'name'=>'',
                 'email'=>'',
+                'age'=>'',
+                'username'=>'',
                 'password'=>'',
                 'name_err'=>'',
                 'email_err'=>'',
+                'age_err'=>'',
+                'username_err'=>'',
                 'password_err'=>''
             ];
              $this->view('users/createAccountAjax',$data);
