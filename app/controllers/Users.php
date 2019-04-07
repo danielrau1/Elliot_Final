@@ -188,7 +188,7 @@ class Users extends Controller{
                 // create sessions
                 //die('you are logged');
                 //$this->view('pages/about', $data);
-                $_SESSION['in'] = $data['username'];
+                $_SESSION['in'] = $data['name'];
                 header('Location: http://localhost/Final/views/about');
 
             }else{
